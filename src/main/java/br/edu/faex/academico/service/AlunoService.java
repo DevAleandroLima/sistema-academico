@@ -39,7 +39,7 @@ public class AlunoService {
         proximoId++;
 
         this.repository.salvar(aluno);
-        System.out.println("Aluno cadastrado com sucesso.");
+
     }
 
     public List<Aluno> listar(){

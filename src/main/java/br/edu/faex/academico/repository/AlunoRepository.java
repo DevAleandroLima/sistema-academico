@@ -1,7 +1,12 @@
 package br.edu.faex.academico.repository;
 
+
+import br.edu.faex.academico.config.Conexao;
 import br.edu.faex.academico.model.Aluno;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +14,26 @@ public class AlunoRepository {
     private List<Aluno> alunos = new ArrayList<>();
 
     public void salvar(Aluno aluno){
-        alunos.add(aluno);
+        //alunos.add(aluno);
+        String sql = "insert into alunos (nome, email, ativo) VALUES (?, ?, ?)";
+        try {
+            Connection conexao = Conexao.conectar();
+            PreparedStatement comando = conexao.prepareStatement(sql); //Statement = comando/instrução
+            comando.setString(1, aluno.getNome());
+            comando.setString(2, aluno.getEmail());
+            comando.setBoolean(3, aluno.isAtivo());
+            comando.executeUpdate();
+            comando.close();
+            conexao.close();
+            System.out.println("Aluno cadastrado com sucesso.");
+        } catch (SQLException e) {
+            System.out.println("Erro ao cadastrar:" + e.getMessage());
+        }
     }
 
     public List<Aluno> listar(){
         return alunos;
+
     }
 
     public Aluno buscarPorId(Long id){
